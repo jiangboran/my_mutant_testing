@@ -3,7 +3,7 @@ package mutator;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.expr.BinaryExpr;
-import visitor.BinaryExprCollector;
+import visitor.RORExprCollector;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ public class RORMutator extends AbstractMutator{
     }
     @Override
     public void locateMutationPoints() {
-        mutPoints = BinaryExprCollector.collect(this.origCU);
+        mutPoints = RORExprCollector.collect(this.origCU);
     }
     @Override
     public List<CompilationUnit> mutate() {

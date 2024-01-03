@@ -3,7 +3,7 @@ package mutator;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.expr.UnaryExpr;
-import visitor.UnaryExprCollector;
+import visitor.UOIExprCollector;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class UOIMutator extends AbstractMutator{
     @Override
     public void locateMutationPoints() {
         // Locate mutation points for unary operators
-        mutPoints = UnaryExprCollector.collect(this.origCU);
+        mutPoints = UOIExprCollector.collect(this.origCU);
     }
     @Override
     public List<CompilationUnit> mutate() {

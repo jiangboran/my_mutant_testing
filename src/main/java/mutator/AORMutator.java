@@ -3,7 +3,7 @@ package mutator;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.expr.BinaryExpr;
-import visitor.BinaryExprCollector;
+import visitor.AORExprCollector;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public class AORMutator extends AbstractMutator{
     }
     @Override
     public void locateMutationPoints() {
-        mutPoints = BinaryExprCollector.collect(this.origCU);
+        mutPoints = AORExprCollector.collect(this.origCU);
     }
     @Override
     public List<CompilationUnit> mutate() {

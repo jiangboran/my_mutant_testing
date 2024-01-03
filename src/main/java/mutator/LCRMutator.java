@@ -3,7 +3,7 @@ package mutator;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.expr.BinaryExpr;
-import visitor.BinaryExprCollector;
+import visitor.LCRExprCollector;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class LCRMutator extends AbstractMutator{
 
     @Override
     public void locateMutationPoints() {
-        mutPoints = BinaryExprCollector.collect(this.origCU);
+        mutPoints = LCRExprCollector.collect(this.origCU);
     }
     @Override
     public List<CompilationUnit> mutate() {

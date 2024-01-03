@@ -2,26 +2,25 @@ package mutator;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.expr.MethodCallExpr;
+import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.expr.UnaryExpr;
-import visitor.UnaryExprCollector;
+import visitor.ABSExprCollector;
 
 import java.util.List;
 
-public class ABSMutator extends AbstractMutator{
+public class ABSMutator extends AbstractMutator {
     private List<UnaryExpr> mutPoints = null;
     private List<CompilationUnit> mutants = new NodeList<>();
-    private final UnaryExpr.Operator[] absOps = {
-            UnaryExpr.Operator.PLUS, UnaryExpr.Operator.MINUS
-    };
+
     public ABSMutator(CompilationUnit cu) {
         super(cu);
     }
 
-
     @Override
     public void locateMutationPoints() {
         // Locate mutation points for unary operators
-        mutPoints = UnaryExprCollector.collect(this.origCU);
+        mutPoints = ABSExprCollector.collect(this.origCU);
     }
 
     @Override
@@ -31,29 +30,32 @@ public class ABSMutator extends AbstractMutator{
             throw new RuntimeException("You must locate mutation points first!");
         // Modify each mutation point.
         for (UnaryExpr mp : mutPoints) {
-            // This is a polluted operation. So we preserve the original
-            // operator for recovering.
-            UnaryExpr.Operator origOp = mp.getOperator();
-
             // Generate simple mutation. Each mutant contains only one
             // mutated point.
-            // ABS Mutation
-            for (UnaryExpr.Operator absOp : absOps) {
-                mutants.add(mutateABS(mp, absOp));
-            }
-
-            // Recovering
-            mp.setOperator(origOp);
+            mutants.add(mutateABS(mp));
         }
         return this.mutants;
     }
-    private CompilationUnit mutateABS(UnaryExpr mp, UnaryExpr.Operator absOp) {
-        UnaryExpr absExpr = new UnaryExpr();
-        absExpr.setOperator(absOp);
-        absExpr.setExpression(mp.getExpression().clone());
-        mp.setExpression(absExpr);
-        return this.origCU.clone();
+
+    // 对一元表达式进行绝对值变异
+    private CompilationUnit mutateABS(UnaryExpr mp) {
+        // 创建一个表示调用 Math.abs 方法的新 MethodCallExpr
+        MethodCallExpr absExpr = new MethodCallExpr(new NameExpr("Math"), "abs");
+        absExpr.addArgument(mp.getExpression().clone());
+
+        // 在 AST 中用 ABS 表达式替换原始表达式
+        mp.replace(absExpr);
+
+        // 现在 CompilationUnit (CU) 是变异后的版本。返回其克隆。
+        CompilationUnit mutatedCU = this.origCU.clone();
+
+        // 为了进行未来的变异，恢复原始表达式
+        absExpr.getArguments().clear();
+        absExpr.addArgument(mp.getExpression().clone());
+
+        return mutatedCU;
     }
+
     public List<CompilationUnit> getMutants() {
         if (mutants.isEmpty())
             System.out.println("Oops, seems no mutation has been conducted yet. Call mutate() first!");
