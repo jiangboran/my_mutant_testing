@@ -1,9 +1,8 @@
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.PackageDeclaration;
-import mutator.BinaryMutator;
+import mutator.AORMutator;
 import mutator.Mutator;
-import mutator.UnaryMutator;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -14,14 +13,14 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * source-level mutation engine using javaparser.
+ * source-level aormutation engine using javaparser.
  */
-public class MutationEngine {
+public class AORMutationEngine {
 
     public static void main(String[] args) throws IOException {
 
         if (args.length != 2) {
-            System.out.println("MutationEngine: <source_java_file> <mutant_pool_dir>");
+            System.out.println("AORMutationEngine: <source_java_file> <mutant_pool_dir>");
             System.exit(0);
         }
 
@@ -33,20 +32,16 @@ public class MutationEngine {
 
 // Initialize mutator(s).
         CompilationUnit cu = StaticJavaParser.parse(srcFile);
-        Mutator unaryMutator = new UnaryMutator(cu);
-        Mutator binaryMutator = new BinaryMutator(cu);
+        Mutator aorMutator = new AORMutator(cu);
 
 // Locate mutation points.
-        binaryMutator.locateMutationPoints();
-        unaryMutator.locateMutationPoints();
 
-        // Fire off mutation! Mutants can be wrapped.
-        List<CompilationUnit> unaryMutCUs = unaryMutator.mutate();
-        List<CompilationUnit> binaryMutCUs = binaryMutator.mutate();
-        List<CompilationUnit> mutCUs = new ArrayList<>();
-        // Add all elements from unaryMutCUs to mutCUs
-        mutCUs.addAll(unaryMutCUs);
-        mutCUs.addAll(binaryMutCUs);
+        aorMutator.locateMutationPoints();
+
+// Fire off mutation and collect mutants.
+        List<CompilationUnit> mutCUs = new ArrayList<>(aorMutator.mutate());
+
+
 
         System.out.printf("[LOG] Generate %d mutants.\n", mutCUs.size());
 
