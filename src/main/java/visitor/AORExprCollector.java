@@ -18,7 +18,8 @@ public class AORExprCollector extends VoidVisitorAdapter<List<BinaryExpr>> {
             BinaryExpr.Operator.PLUS,
             BinaryExpr.Operator.MINUS,
             BinaryExpr.Operator.MULTIPLY,
-            BinaryExpr.Operator.DIVIDE
+            BinaryExpr.Operator.DIVIDE,
+            BinaryExpr.Operator.REMAINDER
     );
 
     @Override

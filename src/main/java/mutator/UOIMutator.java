@@ -38,9 +38,6 @@ public class UOIMutator extends AbstractMutator{
 
             // UOI Mutation
             for (UnaryExpr.Operator uoiOp : uoiOps) {
-                // Skip self
-                if (origOp.equals(uoiOp))
-                    continue;
                 // Mutate
                 mutants.add(mutateUOI(mp, uoiOp));
             }

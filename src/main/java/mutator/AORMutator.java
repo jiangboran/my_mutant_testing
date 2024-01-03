@@ -15,7 +15,7 @@ public class AORMutator extends AbstractMutator{
     private List<CompilationUnit> mutants = new NodeList<>();
 
     private final BinaryExpr.Operator[] aorOps = {
-            PLUS, MINUS, MULTIPLY, DIVIDE
+            PLUS, MINUS, MULTIPLY, DIVIDE, REMAINDER
     };
     public AORMutator(CompilationUnit cu) {
         super(cu);

@@ -12,9 +12,9 @@ public class Calculator {
         return a - +b;
     }
 
-    public static int multiply(int a, int b) {
-        return a * b;
-    }
+    public static int multiply(int a, int b) {return a * b;}
+    public static boolean greater(int a, int b){return a > b;}
+    public static boolean and(boolean a, boolean b){return a&&b;}
 
 
 }

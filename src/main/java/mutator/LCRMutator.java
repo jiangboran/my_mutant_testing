@@ -30,8 +30,6 @@ public class LCRMutator extends AbstractMutator{
             BinaryExpr.Operator origOp = mp.getOperator();
             // LCR Mutation
             for (BinaryExpr.Operator lcrOp : lcrOps) {
-                if (origOp.equals(lcrOp))
-                    continue;
                 mutants.add(mutateLCR(mp, lcrOp));
             }
 

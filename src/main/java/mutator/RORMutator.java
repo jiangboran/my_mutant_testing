@@ -32,8 +32,6 @@ public class RORMutator extends AbstractMutator{
 
             // ROR Mutation
             for (BinaryExpr.Operator rorOp : rorOps) {
-                if (origOp.equals(rorOp))
-                    continue;
                 mutants.add(mutateROR(mp, rorOp));
             }
         }
