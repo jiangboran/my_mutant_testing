@@ -4,13 +4,12 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.NameExpr;
-import com.github.javaparser.ast.expr.UnaryExpr;
 import visitor.ABSExprCollector;
 
 import java.util.List;
 
 public class ABSMutator extends AbstractMutator {
-    private List<UnaryExpr> mutPoints = null;
+    private List<NameExpr> mutPoints = null;
     private List<CompilationUnit> mutants = new NodeList<>();
 
     public ABSMutator(CompilationUnit cu) {
@@ -19,7 +18,7 @@ public class ABSMutator extends AbstractMutator {
 
     @Override
     public void locateMutationPoints() {
-        // Locate mutation points for unary operators
+        // Locate mutation points for name operators
         mutPoints = ABSExprCollector.collect(this.origCU);
     }
 
@@ -29,7 +28,7 @@ public class ABSMutator extends AbstractMutator {
         if (this.mutPoints == null)
             throw new RuntimeException("You must locate mutation points first!");
         // Modify each mutation point.
-        for (UnaryExpr mp : mutPoints) {
+        for (NameExpr mp : mutPoints) {
             // Generate simple mutation. Each mutant contains only one
             // mutated point.
             mutants.add(mutateABS(mp));
@@ -38,10 +37,10 @@ public class ABSMutator extends AbstractMutator {
     }
 
     // 对一元表达式进行绝对值变异
-    private CompilationUnit mutateABS(UnaryExpr mp) {
+    private CompilationUnit mutateABS(NameExpr mp) {
         // 创建一个表示调用 Math.abs 方法的新 MethodCallExpr
         MethodCallExpr absExpr = new MethodCallExpr(new NameExpr("Math"), "abs");
-        absExpr.addArgument(mp.getExpression().clone());
+        absExpr.addArgument(String.valueOf(mp.getName().clone()));
 
         // 在 AST 中用 ABS 表达式替换原始表达式
         mp.replace(absExpr);
@@ -51,7 +50,7 @@ public class ABSMutator extends AbstractMutator {
 
         // 为了进行未来的变异，恢复原始表达式
         absExpr.getArguments().clear();
-        absExpr.addArgument(mp.getExpression().clone());
+        absExpr.addArgument(String.valueOf(mp.getName().clone()));
 
         return mutatedCU;
     }

@@ -44,7 +44,6 @@ public class AORMutationEngine {
         List<CompilationUnit> mutCUs = new ArrayList<>(aorMutator.mutate());
 
 
-
         System.out.printf("[LOG] Generate %d mutants.\n", mutCUs.size());
 
         // Preserve to local.
@@ -65,7 +64,7 @@ public class AORMutationEngine {
         // Recreate outDir if it is existed.
         if (outDir.exists()) {
             FileUtils.forceDelete(outDir);
-            System.out.println("[LOG] Delete existing outDir." );
+            System.out.println("[LOG] Delete existing outDir.");
         }
         boolean mkdirs = outDir.mkdirs();
         if (mkdirs)
@@ -88,7 +87,7 @@ public class AORMutationEngine {
 
         // Write mutant to local.
         String pattern = "mut-%d/%s";
-        for (int i = 0 ; i < mutants.size(); i++) {
+        for (int i = 0; i < mutants.size(); i++) {
             // Create directory to preserve the mutant
             File srcFileDir = new File(outDir, String.format(pattern, i + 1, packPath));
             mkdirs = srcFileDir.mkdirs();

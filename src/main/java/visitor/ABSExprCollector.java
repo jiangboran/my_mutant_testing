@@ -2,35 +2,36 @@ package visitor;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.NodeList;
-import com.github.javaparser.ast.expr.UnaryExpr;
+import com.github.javaparser.ast.expr.NameExpr;
+import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 
 import java.util.List;
 
 /**
  * Collect unary expressions involving absolute value operation
- * @see UnaryExpr
+ * @see NameExpr
  */
-public class ABSExprCollector extends VoidVisitorAdapter<List<UnaryExpr>> {
+public class ABSExprCollector extends VoidVisitorAdapter<List<NameExpr>> {
 
     @Override
-    public void visit(UnaryExpr n, List<UnaryExpr> arg) {
+    public void visit(NameExpr n, List<NameExpr> arg) {
         super.visit(n, arg);
         // Check if the unary expression is a candidate for ABS mutation
-        if (isABSUnaryExpr(n)) {
+        if (isABSNameExpr(n)) {
             arg.add(n);
         }
     }
 
-    private boolean isABSUnaryExpr(UnaryExpr unaryExpr) {
+    private boolean isABSNameExpr(NameExpr nameExpr) {
         // Include all unary expressions
         return true;
     }
 
-    public static List<UnaryExpr> collect(CompilationUnit cu) {
+    public static List<NameExpr> collect(CompilationUnit cu) {
         ABSExprCollector collector = new ABSExprCollector();
-        List<UnaryExpr> absUnaryExprList = new NodeList<>();
-        collector.visit(cu, absUnaryExprList);
-        return absUnaryExprList;
+        List<NameExpr> absNameExprList = new NodeList<>();
+        collector.visit(cu, absNameExprList);
+        return absNameExprList;
     }
 }
