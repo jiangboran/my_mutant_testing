@@ -1,3 +1,5 @@
+package executiom;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -13,13 +15,13 @@ public class MutantExecution {
 
 
     // Use fixed test suite in this class.
-    static String TEST_SUITE_FQN = "edu.nju.mutest.example.CalculatorTestSuite";
+    static String TEST_SUITE_FQN = "example.CalculatorTestSuite";
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
         if (args.length != 2) {
             // Require param for specifying test suite.
-            System.out.println("MutantExecution: <testsuite_dir> <mutant_pool_dir>");
+            System.out.println("executiom.MutantExecution: <testsuite_dir> <mutant_pool_dir>");
             System.exit(0);
         }
 

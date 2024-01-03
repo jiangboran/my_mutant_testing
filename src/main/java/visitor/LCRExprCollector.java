@@ -1,6 +1,7 @@
 package visitor;
 
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.expr.BinaryExpr;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 
@@ -32,7 +33,7 @@ public class LCRExprCollector extends VoidVisitorAdapter<List<BinaryExpr>> {
 
     public static List<BinaryExpr> collect(CompilationUnit cu) {
         LCRExprCollector collector = new LCRExprCollector();
-        List<BinaryExpr> lcrBinaryExprList = List.of();
+        List<BinaryExpr> lcrBinaryExprList = new NodeList<>();
         collector.visit(cu, lcrBinaryExprList);
         return lcrBinaryExprList;
     }

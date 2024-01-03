@@ -1,6 +1,7 @@
 package visitor;
 
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.expr.BinaryExpr;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 
@@ -23,19 +24,19 @@ public class AORExprCollector extends VoidVisitorAdapter<List<BinaryExpr>> {
     @Override
     public void visit(BinaryExpr n, List<BinaryExpr> arg) {
         super.visit(n, arg);
-        if (isABSBinaryExpr(n)) {
+        if (isAORBinaryExpr(n)) {
             arg.add(n);
         }
     }
 
-    private boolean isABSBinaryExpr(BinaryExpr binaryExpr) {
+    private boolean isAORBinaryExpr(BinaryExpr binaryExpr) {
         return AOR_OPERATORS.contains(binaryExpr.getOperator());
     }
 
     public static List<BinaryExpr> collect(CompilationUnit cu) {
         AORExprCollector collector = new AORExprCollector();
-        List<BinaryExpr> absBinaryExprList = List.of();
-        collector.visit(cu, absBinaryExprList);
-        return absBinaryExprList;
+        List<BinaryExpr> aorBinaryExprList = new NodeList<>();
+        collector.visit(cu, aorBinaryExprList);
+        return aorBinaryExprList;
     }
 }

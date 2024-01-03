@@ -1,6 +1,7 @@
 package visitor;
 
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.expr.BinaryExpr;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 
@@ -36,7 +37,7 @@ public class RORExprCollector extends VoidVisitorAdapter<List<BinaryExpr>> {
 
     public static List<BinaryExpr> collect(CompilationUnit cu) {
         RORExprCollector collector = new RORExprCollector();
-        List<BinaryExpr> rorBinaryExprList = List.of();
+        List<BinaryExpr> rorBinaryExprList = new NodeList<>();
         collector.visit(cu, rorBinaryExprList);
         return rorBinaryExprList;
     }

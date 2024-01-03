@@ -1,6 +1,7 @@
 package visitor;
 
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.expr.UnaryExpr;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 
@@ -28,7 +29,7 @@ public class ABSExprCollector extends VoidVisitorAdapter<List<UnaryExpr>> {
 
     public static List<UnaryExpr> collect(CompilationUnit cu) {
         ABSExprCollector collector = new ABSExprCollector();
-        List<UnaryExpr> absUnaryExprList = List.of();
+        List<UnaryExpr> absUnaryExprList = new NodeList<>();
         collector.visit(cu, absUnaryExprList);
         return absUnaryExprList;
     }
