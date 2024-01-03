@@ -18,7 +18,6 @@ public class RORMutator extends AbstractMutator{
     public RORMutator(CompilationUnit cu) {
         super(cu);
     }
-
     @Override
     public void locateMutationPoints() {
         mutPoints = BinaryExprCollector.collect(this.origCU);
