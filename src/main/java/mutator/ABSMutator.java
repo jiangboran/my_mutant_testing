@@ -2,14 +2,10 @@ package mutator;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.NodeList;
-import com.github.javaparser.ast.expr.BinaryExpr;
 import com.github.javaparser.ast.expr.UnaryExpr;
 import visitor.UnaryExprCollector;
 
 import java.util.List;
-
-import static com.github.javaparser.ast.expr.BinaryExpr.Operator.*;
-import static com.github.javaparser.ast.expr.BinaryExpr.Operator.DIVIDE;
 
 public class ABSMutator extends AbstractMutator{
     private List<UnaryExpr> mutPoints = null;
