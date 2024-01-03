@@ -1,3 +1,5 @@
+package engine;
+
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.PackageDeclaration;
@@ -20,7 +22,7 @@ public class ABSMutationEngine {
     public static void main(String[] args) throws IOException {
 
         if (args.length != 2) {
-            System.out.println("ABSMutationEngine: <source_java_file> <mutant_pool_dir>");
+            System.out.println("engine.ABSMutationEngine: <source_java_file> <mutant_pool_dir>");
             System.exit(0);
         }
 

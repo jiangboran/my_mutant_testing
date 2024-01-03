@@ -1,7 +1,9 @@
+package engine;
+
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.PackageDeclaration;
-import mutator.UOIMutator;
+import mutator.LCRMutator;
 import mutator.Mutator;
 import org.apache.commons.io.FileUtils;
 
@@ -13,14 +15,14 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * source-level uoimutation engine using javaparser.
+ * source-level lcrmutation engine using javaparser.
  */
-public class UOIMutationEngine {
+public class LCRMutationEngine {
 
     public static void main(String[] args) throws IOException {
 
         if (args.length != 2) {
-            System.out.println("UOIMutationEngine: <source_java_file> <mutant_pool_dir>");
+            System.out.println("engine.LCRMutationEngine: <source_java_file> <mutant_pool_dir>");
             System.exit(0);
         }
 
@@ -32,14 +34,14 @@ public class UOIMutationEngine {
 
 // Initialize mutator(s).
         CompilationUnit cu = StaticJavaParser.parse(srcFile);
-        Mutator uoiMutator = new UOIMutator(cu);
+        Mutator lcrMutator = new LCRMutator(cu);
 
 // Locate mutation points.
 
-        uoiMutator.locateMutationPoints();
+        lcrMutator.locateMutationPoints();
 
 // Fire off mutation and collect mutants.
-        List<CompilationUnit> mutCUs = new ArrayList<>(uoiMutator.mutate());
+        List<CompilationUnit> mutCUs = new ArrayList<>(lcrMutator.mutate());
 
 
 

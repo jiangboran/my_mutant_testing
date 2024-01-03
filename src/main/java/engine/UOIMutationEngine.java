@@ -1,7 +1,9 @@
+package engine;
+
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.PackageDeclaration;
-import mutator.AORMutator;
+import mutator.UOIMutator;
 import mutator.Mutator;
 import org.apache.commons.io.FileUtils;
 
@@ -13,14 +15,14 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * source-level aormutation engine using javaparser.
+ * source-level uoimutation engine using javaparser.
  */
-public class AORMutationEngine {
+public class UOIMutationEngine {
 
     public static void main(String[] args) throws IOException {
 
         if (args.length != 2) {
-            System.out.println("AORMutationEngine: <source_java_file> <mutant_pool_dir>");
+            System.out.println("engine.UOIMutationEngine: <source_java_file> <mutant_pool_dir>");
             System.exit(0);
         }
 
@@ -32,14 +34,14 @@ public class AORMutationEngine {
 
 // Initialize mutator(s).
         CompilationUnit cu = StaticJavaParser.parse(srcFile);
-        Mutator aorMutator = new AORMutator(cu);
+        Mutator uoiMutator = new UOIMutator(cu);
 
 // Locate mutation points.
 
-        aorMutator.locateMutationPoints();
+        uoiMutator.locateMutationPoints();
 
 // Fire off mutation and collect mutants.
-        List<CompilationUnit> mutCUs = new ArrayList<>(aorMutator.mutate());
+        List<CompilationUnit> mutCUs = new ArrayList<>(uoiMutator.mutate());
 
 
 
