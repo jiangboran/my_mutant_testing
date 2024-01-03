@@ -7,16 +7,16 @@ import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.expr.UnaryExpr;
 import visitor.ABSExprCollector;
+import visitor.UOIExprCollector;
 
 import java.util.List;
-import java.util.Optional;
 
 public class ABSMutator extends AbstractMutator {
     private List<NameExpr> mutPoints_name = null;
-    private List<NameExpr> mutPoints_unary = null;
+    private List<UnaryExpr> mutPoints_unary = null;
     private List<CompilationUnit> mutants = new NodeList<>();
     private final UnaryExpr.Operator[] absOps = {
-            UnaryExpr.Operator.PLUS, UnaryExpr.Operator.MINUS
+            UnaryExpr.Operator.PLUS, UnaryExpr.Operator.MINUS, UnaryExpr.Operator.BITWISE_COMPLEMENT
     };
     IntegerLiteralExpr zeroExpr = new IntegerLiteralExpr("0");
 
@@ -39,31 +39,27 @@ public class ABSMutator extends AbstractMutator {
         for (NameExpr mp : mutPoints_name) {
             // Generate simple mutation. Each mutant contains only one
             // mutated point.
-            NameExpr tmp = mp.clone();
-//                    new NameExpr(String.valueOf(mp));
+            NameExpr temp = mp.clone();
             for (UnaryExpr.Operator absOp : absOps) {
-                mutants.add(mutateABS(tmp,mp, absOp));
+                mutants.add(mutateABS(mp, absOp));
             }
-            mutants.add(mutateABS(mp,0));
+            mp.setName(String.valueOf(temp));
         }
         return this.mutants;
     }
 
     // 对一元表达式进行绝对值变异
-    private CompilationUnit mutateABS(NameExpr tmp,NameExpr mp, UnaryExpr.Operator absOp) {
-        // Clone the original CompilationUnit]
-        UnaryExpr unaryExpr = new UnaryExpr();
-        unaryExpr.setOperator(absOp);
-        unaryExpr.setExpression(tmp);
-        mp.setName(String.valueOf(unaryExpr));
-        CompilationUnit mutatedCU = this.origCU.clone();
-        return mutatedCU;
-    }
-    private CompilationUnit mutateABS(NameExpr mp, int zero) {
-        // Replace NameExpr instances equal to mp
-        mp.setName(String.valueOf(zeroExpr));
-        CompilationUnit mutatedCU = this.origCU.clone();
-        return mutatedCU;
+    private CompilationUnit mutateABS(NameExpr mp,UnaryExpr.Operator absOp) {
+        if(absOp.equals(UnaryExpr.Operator.BITWISE_COMPLEMENT)){
+            mp.setName(String.valueOf("0"));
+        }else {
+            UnaryExpr unaryExpr = new UnaryExpr();
+            unaryExpr.setOperator(absOp);
+            unaryExpr.setExpression(mp);
+            if(absOp.equals(UnaryExpr.Operator.MINUS))
+                mp.setName(String.valueOf(unaryExpr));
+        }
+        return this.origCU.clone();
     }
 
     public List<CompilationUnit> getMutants() {

@@ -12,8 +12,8 @@ import java.io.InputStreamReader;
 public class DemoTest {
     @Test
     public void testMutationEngine() throws IOException, InterruptedException {
-        String src_file = "C:/Users/21125/Desktop/my_mutant_testing\\src/main/java/example/Calculator.java";
-        String pool_dir = "C:\\Users\\21125\\Desktop\\my_mutant_testing\\pool";
+        String src_file = "S:\\File\\Study\\Software Testing\\my_mutant_testing\\src\\main\\java\\example\\Calculator.java";
+        String pool_dir = "S:\\File\\Study\\Software Testing\\my_mutant_testing\\pool";
 
         String[] args = new String[2];
         args[0] = src_file;
