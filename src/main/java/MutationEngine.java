@@ -14,14 +14,14 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Demo source-level mutation engine using javaparser.
+ * source-level mutation engine using javaparser.
  */
 public class MutationEngine {
 
     public static void main(String[] args) throws IOException {
 
         if (args.length != 2) {
-            System.out.println("DemoSrcMutationEngine: <source_java_file> <mutant_pool_dir>");
+            System.out.println("MutationEngine: <source_java_file> <mutant_pool_dir>");
             System.exit(0);
         }
 

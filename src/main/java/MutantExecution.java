@@ -7,19 +7,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * A demo for executing test suite against mutants
+ * A class for executing test suite against mutants
  */
 public class MutantExecution {
 
 
-    // Use fixed test suite in this demo.
+    // Use fixed test suite in this class.
     static String TEST_SUITE_FQN = "edu.nju.mutest.example.CalculatorTestSuite";
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
         if (args.length != 2) {
             // Require param for specifying test suite.
-            System.out.println("DemoMutantExecution: <testsuite_dir> <mutant_pool_dir>");
+            System.out.println("MutantExecution: <testsuite_dir> <mutant_pool_dir>");
             System.exit(0);
         }
 
@@ -73,7 +73,7 @@ public class MutantExecution {
     }
 
     /**
-     * Demo execute once.
+     * It executes once.
      *
      * @param tsDir  test suite dir, part of the classpath
      * @param mutDir mutant class dir, part of the classpath

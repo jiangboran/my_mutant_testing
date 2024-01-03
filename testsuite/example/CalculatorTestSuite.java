@@ -1,7 +1,7 @@
 package example;
 
 /**
- * Demo test suite for {@link Calculator}
+ * test suite for {@link Calculator}
  */
 public class CalculatorTestSuite {
 
