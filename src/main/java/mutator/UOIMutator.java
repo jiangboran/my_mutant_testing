@@ -51,13 +51,7 @@ public class UOIMutator extends AbstractMutator{
         return this.mutants;
     }
     private CompilationUnit mutateUOI(UnaryExpr mp, UnaryExpr.Operator uoiOp) {
-        UnaryExpr uoiExpr = new UnaryExpr();
-        uoiExpr.setOperator(uoiOp);
-        uoiExpr.setExpression(mp.getExpression().clone());
-
-        // Replace the expression with the unary expression
-        mp.setExpression(uoiExpr);
-
+        mp.setOperator(uoiOp);
         // Now the CU is a mutated one. Return its clone.
         return this.origCU.clone();
     }

@@ -22,21 +22,24 @@ public class CompileMutants {
         if (mutantDirs != null) {
             for (File mutantDir : mutantDirs) {
                 if (mutantDir.isDirectory()) {
-                    String mutantDirPath = mutantDir.getAbsolutePath();
+                    File[] subDirectorys = mutantDir.listFiles((dir, name) -> new File(dir, name).isDirectory());
+                    if(subDirectorys != null){
 
-                    // Locate each source file.
-                    File[] sourceFiles = mutantDir.listFiles((dir, name) -> name.endsWith(".java"));
-
-                    if (sourceFiles != null) {
-                        for (File sourceFile : sourceFiles) {
-                            // Compile and output to the directory.
-                            System.out.println("javac -d " + mutantDirPath + " " + sourceFile.getAbsolutePath());
-                            ProcessBuilder pb = new ProcessBuilder("javac", "-d", mutantDirPath, sourceFile.getAbsolutePath());
-                            pb.redirectErrorStream(true);
-                            Process p = pb.start();
-                            p.waitFor();
-                        }
-                    }
+                       for (File subDirectory : subDirectorys){
+                           // Locate each source file.
+                           File[] sourceFiles = subDirectory.listFiles((dir, name) -> name.endsWith(".java"));
+                           if (sourceFiles != null) {
+                               for (File sourceFile : sourceFiles) {
+                                   // Compile and output to the directory.
+                                   System.out.println("javac " + sourceFile.getAbsolutePath());
+                                   ProcessBuilder pb = new ProcessBuilder("javac", sourceFile.getAbsolutePath());
+                                   pb.redirectErrorStream(true);
+                                   Process p = pb.start();
+                                   p.waitFor();
+                               }
+                           }
+                       }
+                   }
                 }
             }
         }
