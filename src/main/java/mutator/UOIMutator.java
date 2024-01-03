@@ -7,29 +7,20 @@ import visitor.UnaryExprCollector;
 
 import java.util.List;
 
-public class UnaryMutator extends AbstractMutator {
-
+public class UOIMutator extends AbstractMutator{
     private List<UnaryExpr> mutPoints = null;
     private List<CompilationUnit> mutants = new NodeList<>();
-
-    private final UnaryExpr.Operator[] absOps = {
-            UnaryExpr.Operator.PLUS, UnaryExpr.Operator.MINUS
-    };
-
     private final UnaryExpr.Operator[] uoiOps = {
             UnaryExpr.Operator.PLUS, UnaryExpr.Operator.MINUS
     };
-
-    public UnaryMutator(CompilationUnit cu) {
+    public UOIMutator(CompilationUnit cu) {
         super(cu);
     }
-
     @Override
     public void locateMutationPoints() {
         // Locate mutation points for unary operators
         mutPoints = UnaryExprCollector.collect(this.origCU);
     }
-
     @Override
     public List<CompilationUnit> mutate() {
         // Sanity check.
@@ -44,10 +35,6 @@ public class UnaryMutator extends AbstractMutator {
 
             // Generate simple mutation. Each mutant contains only one
             // mutated point.
-            // ABS Mutation
-            for (UnaryExpr.Operator absOp : absOps) {
-                mutants.add(mutateABS(mp, absOp));
-            }
 
             // UOI Mutation
             for (UnaryExpr.Operator uoiOp : uoiOps) {
@@ -61,19 +48,7 @@ public class UnaryMutator extends AbstractMutator {
             // Recovering
             mp.setOperator(origOp);
         }
-
         return this.mutants;
-    }
-
-    /**
-     * Insert unary operator
-     */
-    private CompilationUnit mutateABS(UnaryExpr mp, UnaryExpr.Operator absOp) {
-        UnaryExpr absExpr = new UnaryExpr();
-        absExpr.setOperator(absOp);
-        absExpr.setExpression(mp.getExpression().clone());
-        mp.setExpression(absExpr);
-        return this.origCU.clone();
     }
     private CompilationUnit mutateUOI(UnaryExpr mp, UnaryExpr.Operator uoiOp) {
         UnaryExpr uoiExpr = new UnaryExpr();
@@ -86,7 +61,6 @@ public class UnaryMutator extends AbstractMutator {
         // Now the CU is a mutated one. Return its clone.
         return this.origCU.clone();
     }
-
     public List<CompilationUnit> getMutants() {
         if (mutants.isEmpty())
             System.out.println("Oops, seems no mutation has been conducted yet. Call mutate() first!");
