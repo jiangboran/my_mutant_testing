@@ -34,8 +34,8 @@ public class AORMutator extends AbstractMutator{
 
             // AOR Mutation
             for (BinaryExpr.Operator aorOp : aorOps) {
-                if (origOp.equals(aorOp))
-                    continue;
+//                if (origOp.equals(aorOp))
+//                    continue;
                 mutants.add(mutateAOR(mp, aorOp));
             }
 

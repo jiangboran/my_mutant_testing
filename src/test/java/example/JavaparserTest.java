@@ -24,7 +24,7 @@ public class JavaparserTest {
     @Test
     public void testBinaryExprCollector() throws FileNotFoundException {
 
-        String srcPath = "S:\\File\\Study\\Software Testing\\my_mutant_testing\\src\\main\\java\\example\\Calculator.java";
+        String srcPath = "C:/Users/21125/Desktop/my_mutant_testing\\src/main/java/example/Calculator.java";
         File srcFile = new File(srcPath);
         CompilationUnit cu = StaticJavaParser.parse(srcFile);
 
@@ -35,7 +35,6 @@ public class JavaparserTest {
             System.out.println(cu);
             System.out.println("=============================");
         }
-
     }
 
     @Test

@@ -40,5 +40,4 @@ public class CalculatorTestSuite {
             throw new RuntimeException(String.format(
                     "[TEST] testMul() fail (%d, %d)!", oracle, res));
     }
-
 }

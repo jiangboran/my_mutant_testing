@@ -2,7 +2,7 @@ package visitor;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.NodeList;
-import com.github.javaparser.ast.expr.IntegerLiteralExpr;
+import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 
@@ -19,10 +19,7 @@ public class ABSExprCollector extends VoidVisitorAdapter<List<NameExpr>> {
         super.visit(n, arg);
         // Check if the unary expression is a candidate for ABS mutation
         if (isABSNameExpr(n)) {
-            // Replace the NameExpr directly with a new IntegerLiteralExpr
-            n.replace(new IntegerLiteralExpr("0"));
-            // Add the replaced expression to the list
-            arg.add((NameExpr) n.clone());
+            arg.add(n);
         }
     }
 

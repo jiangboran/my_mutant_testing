@@ -69,7 +69,7 @@ public class MutantExecution {
         for (int i = 0; i < paths.length; i++) {
             cpBuilder.append(paths[i]);
             if (i != paths.length - 1)
-                cpBuilder.append(':');
+                cpBuilder.append(';');
         }
         return cpBuilder.toString();
     }
@@ -84,7 +84,7 @@ public class MutantExecution {
     private static boolean execute(File tsDir, File mutDir) throws IOException, InterruptedException {
 
         // Build class path.
-        String cp = concateClassPath(tsDir.getAbsolutePath(), mutDir.getAbsolutePath());
+        String cp = concateClassPath(tsDir.getAbsolutePath(), mutDir.getAbsolutePath(),"C:\\Users\\21125\\Desktop\\my_mutant_testing\\target\\classes");
 
         // Construct executor
         ProcessBuilder pb = new ProcessBuilder("java", "-cp", cp, TEST_SUITE_FQN);
