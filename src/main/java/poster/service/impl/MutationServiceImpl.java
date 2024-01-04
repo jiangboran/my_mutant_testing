@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -28,7 +30,7 @@ public class MutationServiceImpl implements MutationService {
         message += tmp[0] + tmp[1];
         score += tmp[2];
 
-        pool = getPools();
+        pool += getPools();
 
 //        mutationDao.save(mutationEntity);
         return MutationEntity.builder().type(type).score(score).message(message).pool(pool).build();
@@ -37,7 +39,7 @@ public class MutationServiceImpl implements MutationService {
     public String[] MutateByType(String type) throws IOException, InterruptedException {
         String[] mes = new String[3];
         //生成变异体
-        mes[0] += MutationCreate(type);
+        mes[0] = MutationCreate(type);
         //编译
         MutantsCompile();
         //测试
@@ -92,20 +94,37 @@ public class MutationServiceImpl implements MutationService {
         return MutantExecution.main(args);
     }
 
-    public String getPools() throws IOException {
-        String res = "";
-//        S:\File\Study\Software Testing\my_mutant_testing\pool
-        File poolDir = new File("S:\\File\\Study\\Software Testing\\my_mutant_testing\\pool");
+    public static String getPools() {
+        StringBuilder result = new StringBuilder();
+        String pool_dir = "S:\\File\\Study\\Software Testing\\my_mutant_testing\\pool";
+        File poolDir = new File(pool_dir);
         File[] muts = poolDir.listFiles();
-        if(muts !=null){
+        if (muts != null) {
             for(File mut : muts){
-                File[] mut_ex = mut.listFiles();
-                File[] sc = mut_ex[0].listFiles();
-                res += sc[0].getName() + "\n" + Arrays.toString(Files.readAllBytes(sc[0].toPath()));
+                result.append(mut.getName() + "/");
+                File directory = Objects.requireNonNull(mut.listFiles())[0];
+                if (directory.exists() && directory.isDirectory()) {
+                    List<File> javaFiles = listJavaFiles(directory);
+
+                    for (File javaFile : javaFiles) {
+                        try {
+                            String content = new String(Files.readAllBytes(javaFile.toPath()));
+                            result.append(javaFile.getName()).append("\n").append(content).append("\n");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            // 在实际应用中，你可能需要根据具体情况处理异常
+                        }
+                    }
+                } else {
+                    result.append("Directory does not exist\n");
+                }
             }
-            return res;
-        }else {
-            return "Mutant is null";
         }
+//        File directory = new File(pool_dir);
+        return result.toString();
+    }
+
+    private static List<File> listJavaFiles(File directory) {
+        return Arrays.asList(Objects.requireNonNull(directory.listFiles((dir, name) -> name.endsWith(".java"))));
     }
 }

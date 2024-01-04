@@ -26,7 +26,7 @@ public class MutantExecution {
             System.exit(0);
         }
 
-        String[] res = new String[2];
+        String[] res = {"",""};
 
         File tsDir = new File(args[0]);
         File mutPoolDir = new File(args[1]);
@@ -37,7 +37,7 @@ public class MutantExecution {
         File[] fns = mutPoolDir.listFiles();
         if (fns == null) {
 //            System.out.println("[LOG] Find no mutants!");
-            res[0] += "[LOG] Find no mutants!";
+            res[0] = "[LOG] Find no mutants!";
             System.exit(0);
         }
         List<File> mutDirs = Arrays.stream(fns)
@@ -48,35 +48,38 @@ public class MutantExecution {
         // Execute each mutant
 //        System.out.println("[LOG] Start to execute mutants...");
 
-        res[0] += "[LOG] Locate " + mutNum + " mutants\n" + "[LOG] Start to execute mutants...";
+        res[0] += "[LOG] Locate " + mutNum + " mutants\n" + "[LOG] Start to execute mutants...\n";
 
         int killedCnt = 0;
         for (File mutDir : mutDirs) {
             System.out.println("[LOG] -------------------------------------------------");
-            res[0] += "[LOG] -------------------------------------------------";
+            res[0] += "[LOG] -------------------------------------------------\n";
 
             String mutName = mutDir.getName();
             System.out.println("[LOG] Execute " + mutName);
 
-            res[0] += "[LOG] Execute " +  mutName;
+            res[0] += "[LOG] Execute " +  mutName + "\n";
             boolean killed = execute(tsDir, mutDir);
             if (killed) {
                 killedCnt++;
                 System.out.println("[LOG] Killed " + mutName);
 
-                res[0] += "[LOG] Killed " + mutName;
-            } else
+                res[0] += "[LOG] Killed " + mutName+ "\n";
+            } else{
                 System.out.println("[LOG] Survived " + mutName);
-                res[0] += "[LOG] Survived " + mutName;
+                res[0] += "[LOG] Survived " + mutName+ "\n";
+            }
+
         }
 
+
         // Calculate mutation score
-        System.out.println("[LOG] ======================================================");
+        System.out.println("[LOG] ======================================================\n");
         System.out.printf("[LOG] Stats: %d/%d(#killed/#total), score=%.2f\n",
                 killedCnt, mutNum, calScore(killedCnt, mutNum));
 
-        res[0] += "[LOG] ======================================================" +
-                "[LOG] Stats: " + killedCnt + "/" + mutNum + "(#killed/#total)" + calScore(killedCnt,mutNum);
+        res[0] += "[LOG] ======================================================\n" +
+                "[LOG] Stats: " + killedCnt + "/" + mutNum + "(#killed/#total)" + calScore(killedCnt,mutNum)+ "\n";
 
         res[1] += calScore(killedCnt,mutNum);
         return res;

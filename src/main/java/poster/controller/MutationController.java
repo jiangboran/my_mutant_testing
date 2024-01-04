@@ -16,10 +16,9 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class MutationController {
     private final MutationService mutationService;
-    @GetMapping("mutate")
-    public CommonResponse<MutationEntity> mutate(@Valid @RequestBody MutateRequest request) throws IOException, InterruptedException {
-        CommonResponse<MutationEntity> commonResponse = CommonResponse.success(mutationService.getMutationEntity(request.getType()));
-        commonResponse.setCode(104);
-        return commonResponse;
+    @PostMapping("mutate")
+    public MutationEntity mutate(@Valid @RequestBody MutateRequest request) throws IOException, InterruptedException {
+        return mutationService.getMutationEntity(request.getType());
+
     }
 }

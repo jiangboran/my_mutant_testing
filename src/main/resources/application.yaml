@@ -14,7 +14,6 @@ spring:
 
 server:
   port: 8080
-
 #sa-token:
 ##   token-name: token
 ##   # 30 days
@@ -25,4 +24,7 @@ server:
 ##   is-concurrent: true
 ##   is-share: true
 #  token-style: uuid #配置 sa-token 生成 Token 时的风格，这里是使用 UUID 作为 Token。
+logging:
+  level:
+    root: info
 #  is-log: true #开启 sa-token 的日志记录功能，记录登录注销等操作的日志

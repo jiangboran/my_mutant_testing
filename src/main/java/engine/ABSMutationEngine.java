@@ -26,7 +26,7 @@ public class ABSMutationEngine {
             System.exit(0);
         }
 
-        String message = new String();
+
 
         // Read in original program(s).
         File srcFile = new File(args[0]);
@@ -45,12 +45,11 @@ public class ABSMutationEngine {
 // Fire off mutation and collect mutants.
         List<CompilationUnit> mutCUs = new ArrayList<>(absMutator.mutate());
 
-        message += "[LOG] Generate " + mutCUs.size() + "mutants.";
 //        System.out.printf("[LOG] Generate %d mutants.\n", mutCUs.size());
 
         // Preserve to local.
         preserveToLocal(outDir, srcFile, cu, mutCUs);
-        return message;
+        return "[LOG] Generate " + mutCUs.size() + "mutants.";
     }
 
 
