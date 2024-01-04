@@ -26,7 +26,7 @@ public class MutantExecution {
             System.exit(0);
         }
 
-        String res[] = new String(2);
+        String[] res = new String[2];
 
         File tsDir = new File(args[0]);
         File mutPoolDir = new File(args[1]);
@@ -125,7 +125,7 @@ public class MutantExecution {
         return p.exitValue() != 0;
     }
 
-    private static String calScore(int killedCnt, int totalNum) {
+    private static double calScore(int killedCnt, int totalNum) {
         return ((double) killedCnt / (double) totalNum) * 100;
     }
 }

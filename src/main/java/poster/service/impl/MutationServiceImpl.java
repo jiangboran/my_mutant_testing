@@ -9,7 +9,11 @@ import poster.dao.MutationDao;
 import poster.pojo.entity.MutationEntity;
 import poster.service.MutationService;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Arrays;
 
 @Service
 @RequiredArgsConstructor
@@ -25,10 +29,9 @@ public class MutationServiceImpl implements MutationService {
         score += tmp[2];
 
         pool = getPools();
-        MutationEntity mutationEntity = MutationEntity.builder().type(type).score(score).message(message).pool(pool).build();
 
 //        mutationDao.save(mutationEntity);
-        return mutationEntity;
+        return MutationEntity.builder().type(type).score(score).message(message).pool(pool).build();
     }
 
     public String[] MutateByType(String type) throws IOException, InterruptedException {
@@ -50,29 +53,25 @@ public class MutationServiceImpl implements MutationService {
         String[] args = new String[2];
         args[0] = src_file;
         args[1] = pool_dir;
-        if(type.equals("ABS")){
-            return ABSMutationEngine.main(args);
-        } else if(type.equals("AOR")){
-            return AORMutationEngine.main(args);
-        } else if(type.equals("LCR")){
-            return LCRMutationEngine.main(args);
-        }
-        else if(type.equals("ROR")){
-            return RORMutationEngine.main(args);
-        }
-        else if(type.equals("UOI")) {
-            return UOIMutationEngine.main(args);
-        }
-        else if(type.equals("Unary")){
-            return UnaryMutationEngine.main(args);
-        }
-        else if(type.equals("Binary")){
-            return BinaryMutationEngine.main(args);
-        }
-        else if(type.equals("Comprehensive")){
-            return ComprehensiveMutationEngine.main(args);
-        } else{
-            return "TYPE_NOT_FOUND\n";
+        switch (type) {
+            case "ABS":
+                return ABSMutationEngine.main(args);
+            case "AOR":
+                return AORMutationEngine.main(args);
+            case "LCR":
+                return LCRMutationEngine.main(args);
+            case "ROR":
+                return RORMutationEngine.main(args);
+            case "UOI":
+                return UOIMutationEngine.main(args);
+            case "Unary":
+                return UnaryMutationEngine.main(args);
+            case "Binary":
+                return BinaryMutationEngine.main(args);
+            case "Comprehensive":
+                return ComprehensiveMutationEngine.main(args);
+            default:
+                return "TYPE_NOT_FOUND\n";
         }
     }
     public void MutantsCompile() throws IOException, InterruptedException {
@@ -93,10 +92,20 @@ public class MutationServiceImpl implements MutationService {
         return MutantExecution.main(args);
     }
 
-    public String getPools(){
-        String res = new String();
+    public String getPools() throws IOException {
+        String res = "";
 //        S:\File\Study\Software Testing\my_mutant_testing\pool
-
-        return res;
+        File poolDir = new File("S:\\File\\Study\\Software Testing\\my_mutant_testing\\pool");
+        File[] muts = poolDir.listFiles();
+        if(muts !=null){
+            for(File mut : muts){
+                File[] mut_ex = mut.listFiles();
+                File[] sc = mut_ex[0].listFiles();
+                res += sc[0].getName() + "\n" + Arrays.toString(Files.readAllBytes(sc[0].toPath()));
+            }
+            return res;
+        }else {
+            return "Mutant is null";
+        }
     }
 }
