@@ -18,7 +18,7 @@ public class DemoTest {
         String[] args = new String[2];
         args[0] = src_file;
         args[1] = pool_dir;
-        ABSMutationEngine.main(args);
+        ComprehensiveMutationEngine.main(args);
     }
 
     @Test
