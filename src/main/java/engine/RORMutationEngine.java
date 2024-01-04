@@ -19,7 +19,7 @@ import java.util.Optional;
  */
 public class RORMutationEngine {
 
-    public static void main(String[] args) throws IOException {
+    public static String main(String[] args) throws IOException {
 
         if (args.length != 2) {
             System.out.println("engine.RORMutationEngine: <source_java_file> <mutant_pool_dir>");
@@ -50,6 +50,7 @@ public class RORMutationEngine {
         // Preserve to local.
         preserveToLocal(outDir, srcFile, cu, mutCUs);
 
+        return "[LOG] Generate " + mutCUs.size() + "mutants.\n";
     }
 
 

@@ -17,13 +17,16 @@ public class MutantExecution {
     // Use fixed test suite in this class.
     static String TEST_SUITE_FQN = "example.CalculatorTestSuite";
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+
+    public static String[] main(String[] args) throws IOException, InterruptedException {
 
         if (args.length != 2) {
             // Require param for specifying test suite.
             System.out.println("executiom.MutantExecution: <testsuite_dir> <mutant_pool_dir>");
             System.exit(0);
         }
+
+        String res[] = new String(2);
 
         File tsDir = new File(args[0]);
         File mutPoolDir = new File(args[1]);
@@ -33,34 +36,50 @@ public class MutantExecution {
         // Locate all mutants
         File[] fns = mutPoolDir.listFiles();
         if (fns == null) {
-            System.out.println("[LOG] Find no mutants!");
+//            System.out.println("[LOG] Find no mutants!");
+            res[0] += "[LOG] Find no mutants!";
             System.exit(0);
         }
         List<File> mutDirs = Arrays.stream(fns)
                 .filter(f -> !f.getName().startsWith("."))
                 .collect(Collectors.toList());
         int mutNum = mutDirs.size();
-        System.out.printf("[LOG] Locate %d mutants\n", mutNum);
-
+//        System.out.printf("[LOG] Locate %d mutants\n", mutNum);
         // Execute each mutant
-        System.out.println("[LOG] Start to execute mutants...");
+//        System.out.println("[LOG] Start to execute mutants...");
+
+        res[0] += "[LOG] Locate " + mutNum + " mutants\n" + "[LOG] Start to execute mutants...";
+
         int killedCnt = 0;
         for (File mutDir : mutDirs) {
             System.out.println("[LOG] -------------------------------------------------");
+            res[0] += "[LOG] -------------------------------------------------";
+
             String mutName = mutDir.getName();
             System.out.println("[LOG] Execute " + mutName);
+
+            res[0] += "[LOG] Execute " +  mutName;
             boolean killed = execute(tsDir, mutDir);
             if (killed) {
                 killedCnt++;
                 System.out.println("[LOG] Killed " + mutName);
+
+                res[0] += "[LOG] Killed " + mutName;
             } else
                 System.out.println("[LOG] Survived " + mutName);
+                res[0] += "[LOG] Survived " + mutName;
         }
 
         // Calculate mutation score
         System.out.println("[LOG] ======================================================");
         System.out.printf("[LOG] Stats: %d/%d(#killed/#total), score=%.2f\n",
                 killedCnt, mutNum, calScore(killedCnt, mutNum));
+
+        res[0] += "[LOG] ======================================================" +
+                "[LOG] Stats: " + killedCnt + "/" + mutNum + "(#killed/#total)" + calScore(killedCnt,mutNum);
+
+        res[1] += calScore(killedCnt,mutNum);
+        return res;
     }
 
     private static String concateClassPath(String... paths) {
@@ -106,7 +125,7 @@ public class MutantExecution {
         return p.exitValue() != 0;
     }
 
-    private static double calScore(int killedCnt, int totalNum) {
+    private static String calScore(int killedCnt, int totalNum) {
         return ((double) killedCnt / (double) totalNum) * 100;
     }
 }

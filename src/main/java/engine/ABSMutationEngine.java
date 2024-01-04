@@ -19,12 +19,14 @@ import java.util.Optional;
  */
 public class ABSMutationEngine {
 
-    public static void main(String[] args) throws IOException {
+    public static String main(String[] args) throws IOException {
 
         if (args.length != 2) {
             System.out.println("engine.ABSMutationEngine: <source_java_file> <mutant_pool_dir>");
             System.exit(0);
         }
+
+        String message = new String();
 
         // Read in original program(s).
         File srcFile = new File(args[0]);
@@ -43,13 +45,12 @@ public class ABSMutationEngine {
 // Fire off mutation and collect mutants.
         List<CompilationUnit> mutCUs = new ArrayList<>(absMutator.mutate());
 
-
-
-        System.out.printf("[LOG] Generate %d mutants.\n", mutCUs.size());
+        message += "[LOG] Generate " + mutCUs.size() + "mutants.";
+//        System.out.printf("[LOG] Generate %d mutants.\n", mutCUs.size());
 
         // Preserve to local.
         preserveToLocal(outDir, srcFile, cu, mutCUs);
-
+        return message;
     }
 
 
